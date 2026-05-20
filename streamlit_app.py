@@ -23,8 +23,9 @@ conn = st.connection("snowflake")
 # one with conn.cursor().
 session = conn.session()
 
-my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
-# st.dataframe(data=my_dataframe, use_container_width=True)
+my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'),col('SEARCH_ON'))
+st.dataframe(data=my_dataframe, use_container_width=True)
+st.stop()
 
 ingredients_list = st.multiselect(
     'Choose up to 5 ingredients:',
@@ -38,7 +39,7 @@ if ingredients_list:
     for fruit_chosen in ingredients_list:
         ingredients_string += fruit_chosen + ' '
         st.subheader(fruit_chosen + ' - Nutrition Information')
-        smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/" + fruit_chosen) 
+        smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/" + search_on) 
         if smoothiefroot_response.status_code == 200:
             sf_df = st.dataframe(data = smoothiefroot_response.json(), use_container_width = True)
         else:
