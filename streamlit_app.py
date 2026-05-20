@@ -37,9 +37,12 @@ if ingredients_list:
     
     for fruit_chosen in ingredients_list:
         ingredients_string += fruit_chosen + ' '
-        st.subheader(fruit_chosen + 'Nutrition Information')
-        smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/" + fruit_chosen)  
-        sf_df = st.dataframe(data = smoothiefroot_response.json(), use_container_width = True)
+        st.subheader(fruit_chosen + ' - Nutrition Information')
+        smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/" + fruit_chosen) 
+        if smoothiefroot_response = '200':
+            sf_df = st.dataframe(data = smoothiefroot_response.json(), use_container_width = True)
+        else:
+            st.write('no nutrition information found')
 
     my_insert_stmt = """ insert into smoothies.public.orders(ingredients, name_on_order, order_filled)
                     values ('""" + ingredients_string + """','"""+ name_on_order + """','false')"""
